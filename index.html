@@ -810,6 +810,49 @@ border-radius:8px;
 .about-content img:hover{
 transform:scale(1.05);
 }
+
+.main-header{
+text-align:center;
+padding:32px 20px;
+background:linear-gradient(135deg,rgba(235,229,217,0.95),rgba(192,132,252,0.1));
+border-radius:20px;
+margin-bottom:24px;
+box-shadow:0 8px 32px rgba(192,132,252,0.15);
+backdrop-filter:blur(10px);
+border:1px solid rgba(192,132,252,0.2);
+}
+
+.main-logo{
+width:80px;
+height:80px;
+border-radius:16px;
+border:2px solid rgba(192,132,252,0.8);
+background:rgba(255,255,255,0.9);
+box-shadow:0 4px 16px rgba(192,132,252,0.3);
+margin-bottom:16px;
+transition:transform 0.3s ease;
+}
+
+.main-logo:hover{
+transform:scale(1.05);
+}
+
+.main-title{
+color:#6e43b0;
+font-size:42px;
+font-weight:800;
+margin:0 0 8px 0;
+text-shadow:0 2px 4px rgba(192,132,252,0.2);
+letter-spacing:-1px;
+}
+
+.main-subtitle{
+color:#6c5b88;
+font-size:18px;
+font-weight:500;
+margin:0;
+opacity:0.9;
+}
 </style>
 </head>
 
@@ -817,16 +860,19 @@ transform:scale(1.05);
 
 <div class="app">
 
+<div class="main-header">
+    <img src="logo.png" alt="NeutraPerio Logo" class="main-logo" />
+    <h1 class="main-title">NeutraPerio</h1>
+    <p class="main-subtitle">AI-Powered Dental Caries Detection</p>
+</div>
+
 <div class="tabs">
 <button class="tab-button active" data-tab="about"><i class="fas fa-info-circle"></i> About</button>
 <button class="tab-button" data-tab="detection"><i class="fas fa-search"></i> Detection</button>
 </div>
 
 <div class="tab-content" id="detection">
-<div class="brand-header" style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;">
-    <img src="logo.png" alt="Logo" style="width:42px; height:42px; border-radius:10px; border:1px solid rgba(192,132,252,0.6); background:rgba(255,255,255,0.55);" />
-    <h1 style="margin:0;">NeutraPerio</h1>
-</div>
+<h1 style="margin:0 0 8px 0; color:#6e43b0; text-align:center;">Detection Tool</h1>
 <p class="sub">Upload a tooth image to detect enamel caries stage</p>
 
 <div class="upload-box">
