@@ -301,6 +301,22 @@ border-color:#8b5cf6;
 margin-right:6px;
 }
 
+.process-button.loading{
+pointer-events:none;
+opacity:0.7;
+}
+
+.process-button.loading::after{
+content:'';
+width:14px;
+height:14px;
+border:2px solid #EBE5D9;
+border-top:2px solid transparent;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-left:8px;
+}
+
 .results-title{
 font-size:28px;
 color:#6e43b0;
@@ -681,14 +697,20 @@ color:#6e43b0;
 }
 
 .database-scale{
-display:flex;
-flex-wrap:wrap;
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
 gap:16px;
 margin-top:16px;
+justify-items:center;
+}
+
+.database-full-row{
+max-width:780px;
+margin:16px auto 0;
+text-align:center;
 }
 
 .database-item{
-flex:1;
 min-width:200px;
 background:#fefefe;
 padding:16px;
@@ -696,6 +718,22 @@ border-radius:12px;
 border:2px solid rgba(192,132,252,0.2);
 text-align:center;
 transition:all 0.3s ease;
+box-sizing:border-box;
+}
+
+.database-item.full-row{
+width:100%;
+margin:0 auto;
+}
+
+.database-item.full-row p {
+max-width:640px;
+margin:0 auto;
+}
+@media (max-width: 768px) {
+    .database-item.full-row {
+        max-width: 100%;
+    }
 }
 
 .database-item:hover{
@@ -913,13 +951,15 @@ Image preview will appear here
 </div>
 <div class="database-item">
 <h4>Caries Detection Dataset</h4>
-<p>Machine learning models for tooth decay classification</p>
+<p>Machine learning models using a dataset from American International University Bangladesh and Bangladesh University of Business and Technology for tooth decay classification</p>
 </div>
 <div class="database-item">
 <h4>Periodontal Health Database</h4>
 <p>Gum disease and oral health pattern recognition</p>
 </div>
-<div class="database-item">
+</div>
+<div class="database-full-row">
+<div class="database-item full-row">
 <h4>Dental Imaging Archive</h4>
 <p>Comprehensive tooth morphology and structure analysis</p>
 </div>
@@ -980,7 +1020,7 @@ Image preview will appear here
 
 <div class="about-section">
 <h3>What is our objective?</h3>
-<p>Our objective is to democratize access to preliminary dental health insights through cutting-edge AI technology. We aim to empower individuals with early awareness of potential dental issues, promote preventive care, and bridge the gap between technology and healthcare education.</p>
+<p>Tooth decay and the decay of the gums supporting the teeth has been a prominent problem among everyone’s oral health, even those who take extreme care of it. For certain conditions, it is treatable and is able to be cured, while other conditions like enamel erosion, are irreversible. Countless individuals, consequently, are left unawarely deteriorating their teeth health until they are stopped by a dentist, with most cases being too late. Our objective is to provide early detection of enamel diseases.</p>
 </div>
 
 <div class="about-section">
@@ -996,6 +1036,11 @@ Image preview will appear here
 <div class="about-section">
 <h3>Get Started</h3>
 <p>Ready to explore your dental health? Switch to the Detection tab above to upload a tooth image and experience NeutraPerio's AI analysis. Remember, this tool is for educational purposes and should complement, not replace, professional dental care.</p>
+</div>
+
+<div class="about-section">
+<h3>Developers</h3>
+<p>This tool was developed by Akira and Pichaya.</p>
 </div>
 
 <div class="about-section disclaimer">
@@ -1120,32 +1165,39 @@ async function processSelection() {
     statusEl.textContent = "Analyzing selected tooth...";
     statusEl.classList.add("loading");
 
-    const x = Math.min(startX, endX);
-    const y = Math.min(startY, endY);
-    const width = Math.abs(endX - startX);
-    const height = Math.abs(endY - startY);
+    // Disable button and show loading
+    processButton.disabled = true;
+    processButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    processButton.classList.add('loading');
 
-    // Create cropped canvas
-    const croppedCanvas = document.createElement('canvas');
-    croppedCanvas.width = width;
-    croppedCanvas.height = height;
-    const croppedCtx = croppedCanvas.getContext('2d');
-    croppedCtx.drawImage(canvas, x, y, width, height, 0, 0, width, height);
+    // Allow UI to update before starting processing
+    setTimeout(async () => {
+        const x = Math.min(startX, endX);
+        const y = Math.min(startY, endY);
+        const width = Math.abs(endX - startX);
+        const height = Math.abs(endY - startY);
 
-    let prediction = await model.predict(croppedCanvas);
+        // Create cropped canvas
+        const croppedCanvas = document.createElement('canvas');
+        croppedCanvas.width = width;
+        croppedCanvas.height = height;
+        const croppedCtx = croppedCanvas.getContext('2d');
+        croppedCtx.drawImage(canvas, x, y, width, height, 0, 0, width, height);
 
-    prediction.sort((a, b) => {
-        const ai = displayOrder.findIndex(v => a.className.includes(v) || v.includes(a.className));
-        const bi = displayOrder.findIndex(v => b.className.includes(v) || v.includes(b.className));
-        return ai - bi;
-    });
+        let prediction = await model.predict(croppedCanvas);
 
-    const top = [...prediction].sort((a, b) => b.probability - a.probability)[0];
+        prediction.sort((a, b) => {
+            const ai = displayOrder.findIndex(v => a.className.includes(v) || v.includes(a.className));
+            const bi = displayOrder.findIndex(v => b.className.includes(v) || v.includes(b.className));
+            return ai - bi;
+        });
 
-    const percent = Math.round(top.probability * 100);
-    const verdict = formatName(top.className);
+        const top = [...prediction].sort((a, b) => b.probability - a.probability)[0];
 
-    let html = `
+        const percent = Math.round(top.probability * 100);
+        const verdict = formatName(top.className);
+
+        let html = `
 <div class="verdict">
 <div class="verdict-title"><i class="fas fa-check-circle"></i> Verdict</div>
 <div class="verdict-main">${verdict}</div>
@@ -1153,11 +1205,11 @@ async function processSelection() {
 </div>
 `;
 
-    prediction.forEach((p, index) => {
-        const pct = Math.round(p.probability * 100);
-        const name = formatName(p.className);
+        prediction.forEach((p, index) => {
+            const pct = Math.round(p.probability * 100);
+            const name = formatName(p.className);
 
-        html += `
+            html += `
 <div class="result-card" style="animation-delay:${index * 0.1}s">
 <div class="row">
 <span>${name}</span>
@@ -1168,11 +1220,17 @@ async function processSelection() {
 </div>
 </div>
 `;
-    });
+        });
 
-    document.getElementById("result").innerHTML = html;
-    statusEl.textContent = "Analysis complete";
-    statusEl.classList.remove("loading");
+        document.getElementById("result").innerHTML = html;
+        statusEl.textContent = "Analysis complete";
+        statusEl.classList.remove("loading");
+
+        // Re-enable button
+        processButton.disabled = false;
+        processButton.innerHTML = '<i class="fas fa-play"></i> Process Selected Tooth';
+        processButton.classList.remove('loading');
+    }, 0);
 }
 
 async function loadModel(){
