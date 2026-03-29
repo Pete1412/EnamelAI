@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FRTP9S44DH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FRTP9S44DH');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EnamelAI - Advanced Dental Analysis Tool</title>
@@ -696,6 +705,61 @@ line-height:1.5;
 color:#6e43b0;
 }
 
+.founders-section > h3{
+display:block;
+font-size:28px;
+}
+
+.founders-grid{
+display:flex;
+align-items:flex-start;
+gap:0;
+}
+
+.founder-card{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+padding:16px;
+}
+
+.founder-divider{
+width:2px;
+background:#6e43b0;
+align-self:stretch;
+margin:0 8px;
+}
+
+.founder-name{
+font-size:16px;
+font-weight:800;
+color:#111;
+margin-bottom:16px;
+}
+
+.founder-photo{
+width:100%;
+max-width:300px;
+border-radius:12px;
+margin-bottom:16px;
+object-fit:cover;
+}
+
+.founder-title{
+font-size:18px;
+font-weight:700;
+color:#111;
+margin-bottom:8px;
+}
+
+.founder-desc{
+font-size:15px;
+color:#333;
+line-height:1.5;
+}
+
 .database-scale{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
@@ -1038,10 +1102,25 @@ Image preview will appear here
 <p>Ready to explore your dental health? Switch to the Detection tab above to upload a tooth image and experience EnamelAI's AI analysis. Remember, this tool is for educational purposes and should complement, not replace, professional dental care.</p>
 </div>
 
-<div class="about-section">
+<div class="about-section founders-section">
 <h3>Founders</h3>
-<p>This website was developed and coded by Pichaya, based on an idea by Akira.</p>
+<div class="founders-grid">
+  <div class="founder-card">
+    <h3 class="founder-name">Pichaya Tangtrakulwongse</h2>
+    <img src="pete.png" alt="Pichaya Tangtrakulwongse" class="founder-photo">
+    <h3 class="founder-title">Founder &amp; Developer</h3>
+    <p class="founder-desc">Handled all technical aspects and development of the AI model. Bringing EnamelAI to life as a functional tool for the future of dental health.</p>
+  </div>
+  <div class="founder-divider"></div>
+  <div class="founder-card">
+    <h3 class="founder-name">Akira Wongwannaraksa</h2>
+    <img src="kira.png" alt="Akira Wongwannaraksa" class="founder-photo">
+    <h3 class="founder-title">Founder</h3>
+    <p class="founder-desc">Created basis foundation and idea stage of EnamelAI aspiring it to be use to enhance access to dental healthcare worldwide.</p>
+  </div>
 </div>
+</div>
+<p style="font-size:15px; font-weight:700; color:#9b8ab0; margin-top:8px; margin-bottom:24px;">Logo credited to Pimnapa Trivisvavet</p>
 
 <div class="about-section disclaimer">
 <h3>Important Notice</h3>
